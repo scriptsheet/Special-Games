@@ -69,7 +69,6 @@
             gap: 12px;
         }
 
-        /* Style for the customizable link buttons */
         .custom-link {
             padding: 14px 18px;
             background-color: var(--link-bg);
@@ -81,7 +80,6 @@
             transition: all 0.2s ease;
         }
 
-        /* Hover effect */
         .custom-link:hover {
             border-color: var(--accent-color);
             background-color: #f1f5f9;
@@ -120,7 +118,7 @@
 
         .terms-content {
             text-align: left;
-            max-height: 200px;
+            max-height: 180px;
             overflow-y: auto;
             background: #f8fafc;
             padding: 15px;
@@ -129,6 +127,57 @@
             margin-bottom: 20px;
             font-size: 14px;
             line-height: 1.5;
+        }
+
+        /* --- 5. CHECKBOX & SIGNATURE FIELD STYLES --- */
+        .checkbox-container {
+            display: flex;
+            align-items: center;
+            justify-content: left;
+            gap: 10px;
+            margin-bottom: 15px;
+            font-size: 14px;
+            cursor: pointer;
+            text-align: left;
+        }
+
+        .checkbox-container input {
+            width: 18px;
+            height: 18px;
+            cursor: pointer;
+        }
+
+        .signature-container {
+            text-align: left;
+            margin-bottom: 20px;
+        }
+
+        .signature-container label {
+            display: block;
+            font-size: 12px;
+            font-weight: 600;
+            text-transform: uppercase;
+            color: #666;
+            margin-bottom: 6px;
+        }
+
+        .signature-input {
+            width: 100%;
+            padding: 12px;
+            box-sizing: border-box;
+            border: 1px solid #e2e8f0;
+            border-radius: 6px;
+            font-size: 16px;
+            background-color: #f8fafc;
+            /* Cursive font fallback style to look like a realistic signature */
+            font-family: "Georgia", cursive, sans-serif;
+            font-style: italic;
+        }
+
+        .signature-input:focus {
+            outline: none;
+            border-color: var(--accent-color);
+            background-color: #fff;
         }
 
         .accept-btn {
@@ -140,14 +189,21 @@
             font-weight: 600;
             border-radius: 6px;
             cursor: pointer;
-            transition: background 0.2s ease;
+            transition: all 0.2s ease;
+            width: 100%;
         }
 
         .accept-btn:hover {
             background-color: #357abd;
         }
 
-        /* Class used by JavaScript to hide the modal smoothly */
+        /* Locked / Disabled Button Variant */
+        .accept-btn:disabled {
+            background-color: #cbd5e1;
+            color: #94a3b8;
+            cursor: not-allowed;
+        }
+
         .hidden {
             opacity: 0 !important;
             visibility: hidden !important;
@@ -156,17 +212,37 @@
 </head>
 <body>
 
-    <!-- Terms and Conditions Screen Overlay (Active by default every fresh load) -->
+    <!-- Terms and Conditions Screen Overlay -->
     <div id="termsScreen" class="terms-overlay">
         <div class="terms-box">
             <h2>Terms and Conditions</h2>
-            <p style="color: #666; margin-bottom: 15px;">Please read and accept our terms to access the games dashboard.</p>
+            <p style="color: #666; margin-bottom: 15px;">You must complete the verification below to enter the dashboard.</p>
             
+            <!-- Safe Zone: Changing the text inside here won't break anything -->
             <div class="terms-content">
+                <strong> 1. Proper Usage </strong> <br>
+                <ul>
+                    <li> a. You cannot use this website for any malicious purpose, for example but not limited to, Plagiarizing, Hacking, or More. </li>
+                    <li> b. Any malicious purpose you acidentally or purposely gotten yourself into will not be put upon the creator of this project, or any creators  representing any projects displayed. </li>
+                    <li> c. Follow any, and all, rules displayed in this project and in the event of playing a game displayed here, please follow those too. </li>
+                </ul>
                 
             </div>
 
-            <button class="accept-btn" onclick="acceptTerms()">I Agree & Accept</button>
+            <!-- Mandatory Checkbox Element -->
+            <label class="checkbox-container">
+                <input type="checkbox" id="termsCheckbox" onchange="validateForm()">
+                <span>I have read, understood, and accepted all the terms written above.</span>
+            </label>
+
+            <!-- Mandatory Signature Box Input -->
+            <div class="signature-container">
+                <label for="signatureInput">Sign Here:</label>
+                <input type="text" id="signatureInput" class="signature-input" placeholder="Your Name" oninput="validateForm()">
+            </div>
+
+            <!-- Lockable Button -->
+            <button id="acceptBtn" class="accept-btn" onclick="acceptTerms()" disabled>I Agree & Accept</button>
         </div>
     </div>
 
@@ -175,7 +251,6 @@
         <h1>Special Games! Play for free!</h1>
         <p class="subtitle">Quick access to my favorite tools and websites.</p>
 
-        <!-- LINK GROUP 1 -->
         <div class="link-group">
             <div class="group-title">Adan14444's Projects (Credits to Adan)</div>
             <div class="link-grid">
@@ -184,7 +259,6 @@
             </div>
         </div>
 
-        <!-- LINK GROUP 2 -->
         <div class="link-group">
             <div class="group-title">Entertainment</div>
             <div class="link-grid">
@@ -195,10 +269,21 @@
     </div>
 
     <script>
-        // Function called when the user clicks the accept button
+        // Checks every keypress and checkbox toggle to see if both conditions are met
+        function validateForm() {
+            const checkbox = document.getElementById('termsCheckbox');
+            const signature = document.getElementById('signatureInput').value.trim();
+            const acceptBtn = document.getElementById('acceptBtn');
+
+            // If checked AND text length is greater than 0, unlock the button
+            if (checkbox.checked && signature.length > 0) {
+                acceptBtn.disabled = false;
+            } else {
+                acceptBtn.disabled = true;
+            }
+        }
+
         function acceptTerms() {
-            // Dismisses the screen layout for the current tab session only. 
-            // Refreshing the page brings the screen back immediately.
             document.getElementById('termsScreen').classList.add('hidden');
         }
     </script>
