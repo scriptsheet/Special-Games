@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title> Special Games! Play for free! </title>
+    <title>Special Games! Play for free!</title>
     <style>
         /* --- 1. THEME CUSTOMIZATION (Change colors here) --- */
         :root {
@@ -13,6 +13,7 @@
             --accent-color: #4a90e2;   /* Header line and link hover color */
             --link-bg: #f8fafc;        /* Individual link button background */
             --link-border: #e2e8f0;    /* Border around links */
+            --modal-bg: rgba(0, 0, 0, 0.6); /* Dim background for terms screen */
         }
 
         /* --- 2. BASE STYLES --- */
@@ -86,28 +87,100 @@
             background-color: #f1f5f9;
             transform: translateY(-1px);
         }
+
+        /* --- 4. TERMS & CONDITIONS MODAL SCREEN --- */
+        .terms-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: var(--modal-bg);
+            backdrop-filter: blur(4px);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+            padding: 20px;
+            box-sizing: border-box;
+            transition: opacity 0.3s ease, visibility 0.3s ease;
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .terms-box {
+            background: var(--card-bg);
+            max-width: 500px;
+            width: 100%;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.2);
+            text-align: center;
+        }
+
+        .terms-content {
+            text-align: left;
+            max-height: 200px;
+            overflow-y: auto;
+            background: #f8fafc;
+            padding: 15px;
+            border-radius: 6px;
+            border: 1px solid #e2e8f0;
+            margin-bottom: 20px;
+            font-size: 14px;
+            line-height: 1.5;
+        }
+
+        .accept-btn {
+            background-color: var(--accent-color);
+            color: white;
+            border: none;
+            padding: 12px 30px;
+            font-size: 16px;
+            font-weight: 600;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: background 0.2s ease;
+        }
+
+        .accept-btn:hover {
+            background-color: #357abd;
+        }
+
+        /* Class used by JavaScript to hide the modal smoothly */
+        .hidden {
+            opacity: 0 !important;
+            visibility: hidden !important;
+        }
     </style>
 </head>
 <body>
 
-    <div class="container">
-        <!-- Change your title and subtitle here -->
-        <h1>My Dashboard</h1>
-        <p class="subtitle">Quick access to my favorite tools and websites.</p>
-
-        <div class="link-group">
-            <div class="group-title"> !!! IMPORTANT !!! </div>
-            <div class="link-grid"> 
-                <a href="" target="_blank" class="custom-link"> TERMS AND CONDITIONS </a>
+    <!-- Terms and Conditions Screen Overlay (Active by default every fresh load) -->
+    <div id="termsScreen" class="terms-overlay">
+        <div class="terms-box">
+            <h2>Terms and Conditions</h2>
+            <p style="color: #666; margin-bottom: 15px;">Please read and accept our terms to access the games dashboard.</p>
+            
+            <div class="terms-content">
+                
             </div>
+
+            <button class="accept-btn" onclick="acceptTerms()">I Agree & Accept</button>
         </div>
+    </div>
+
+    <!-- Main Dashboard Container -->
+    <div class="container">
+        <h1>Special Games! Play for free!</h1>
+        <p class="subtitle">Quick access to my favorite tools and websites.</p>
 
         <!-- LINK GROUP 1 -->
         <div class="link-group">
-            <div class="group-title"> Adan14444's Projects (Credits to Adan) </div>
+            <div class="group-title">Adan14444's Projects (Credits to Adan)</div>
             <div class="link-grid">
-                <a href="https://scriptsheet.github.io/Special-Games/adan14444-STOCKFISH.html" target="_blank" class="custom-link"> STOCKFISH! Play Now For Free! </a>
-                <a href="https://scriptsheet.github.io/Special-Games/adan14444-ABYSSALIS.html" target="_blank" class="custom-link"> ABYSSALIS! Play Now For Free! </a>
+                <a href="https://github.io" target="_blank" class="custom-link"> ♞ STOCKFISH! Play Now For Free! </a>
+                <a href="https://github.io" target="_blank" class="custom-link"> 🌿 ABYSSALIS! Play Now For Free! </a>
             </div>
         </div>
 
@@ -119,8 +192,15 @@
                 <a href="https://reddit.com" target="_blank" class="custom-link">🤖 Reddit</a>
             </div>
         </div>
-
     </div>
 
+    <script>
+        // Function called when the user clicks the accept button
+        function acceptTerms() {
+            // Dismisses the screen layout for the current tab session only. 
+            // Refreshing the page brings the screen back immediately.
+            document.getElementById('termsScreen').classList.add('hidden');
+        }
+    </script>
 </body>
 </html>
